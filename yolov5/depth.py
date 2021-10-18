@@ -20,7 +20,8 @@ from intent import intent
 def depth(new_intent):
     
     # set softarm controller with IP address of raspberry pi
-    controller = Controller("http://172.22.0.75:5000")
+    #controller = Controller("http://172.22.0.75:5000")
+    controller = Controller("http://192.168.1.20:5000")
     # get yolov5 input args
     opt = getInputArgs()
     # initialise intel realsense pipeline
@@ -216,7 +217,9 @@ def depth(new_intent):
                 else:
                     images = np.hstack((color_image, depth_colormap))
             else:
-                images = color_image
+                h,w,_= color_image.shape
+                scale=1
+                images = cv2.resize(color_image,(int(w*scale),int(h*scale)))
             # Show images
             cv2.namedWindow('RealSense', cv2.WINDOW_AUTOSIZE)
             cv2.imshow('RealSense', images)
